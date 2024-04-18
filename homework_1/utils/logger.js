@@ -1,20 +1,26 @@
-function info(msg) {
-  console.log(msg);
+function info(prefix) {
+  return (msg) => {
+    console.log(`${prefix}: ${msg}`);
+  };
 }
 
-function warn(msg) {
-  console.error(msg);
+function warn(prefix) {
+  return (msg) => {
+    console.error(`${prefix}: ${msg}`);
+  };
 }
 
-function error(msg) {
-  console.error(msg);
+function error(prefix) {
+  return (msg) => {
+    console.error(`${prefix}: ${msg}`);
+  };
 }
 
-function getLogger() {
+function getLogger(prefix) {
   return {
-    info,
-    warn,
-    error,
+    info: info(prefix),
+    warn: warn(prefix),
+    error: error(prefix),
   };
 }
 
