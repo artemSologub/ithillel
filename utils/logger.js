@@ -1,7 +1,7 @@
 const config = require('config');
 const { bgBlue, bgYellow, bgRed } = require('colors/safe');
 
-const colorsEnabled = config.colorsEnabled;
+const colorsEnabled = config.colorsEnabled === '1';
 const logLevel = config.logLevel;
 
 function getLogger(moduleName) {
@@ -12,7 +12,7 @@ function getLogger(moduleName) {
       }
 
       return console.log(
-        colorsEnabled === 1 ? bgYellow(`${moduleName}:`) : `${moduleName}:`,
+        colorsEnabled ? bgYellow(`${moduleName}:`) : `${moduleName}:`,
         ...args
       );
     },
@@ -22,13 +22,13 @@ function getLogger(moduleName) {
       }
 
       return console.error(
-        colorsEnabled === 1 ? bgYellow(`${moduleName}:`) : `${moduleName}:`,
+        colorsEnabled ? bgYellow(`${moduleName}:`) : `${moduleName}:`,
         ...args
       );
     },
     error: (...args) =>
       console.error(
-        colorsEnabled === 1 ? bgRed(`${moduleName}:`) : `${moduleName}:`,
+        colorsEnabled ? bgRed(`${moduleName}:`) : `${moduleName}:`,
         ...args
       ),
   };

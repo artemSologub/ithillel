@@ -1,5 +1,5 @@
-# toggle module bg-color
+# toggle module bg-color. Possible values: 0 | 1
 COLORS_ENABLED=0
 
-# set logger methods availability
-LOG_LEVEL='warn'
+# set logger methods availability. Possible values: info | warn | error
+LOG_LEVEL=warn
