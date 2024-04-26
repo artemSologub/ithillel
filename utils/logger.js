@@ -7,12 +7,12 @@ const logLevel = config.logLevel;
 function getLogger(moduleName) {
   return {
     info: (...args) => {
-      if (logLevel === 'error' || logLevel === 'warn') {
+      if (logLevel !== 'info') {
         return;
       }
 
       return console.log(
-        colorsEnabled ? bgYellow(`${moduleName}:`) : `${moduleName}:`,
+        colorsEnabled ? bgBlue(`${moduleName}:`) : `${moduleName}:`,
         ...args
       );
     },
