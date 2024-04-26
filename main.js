@@ -1,3 +1,5 @@
-const logger = require('./homework_1/utils/logger')('main');
+const logger = require('./utils/logger')('main');
 
 logger.info('the script is running!');
+logger.warn('warn mesage!');
+logger.error('error mesage!');

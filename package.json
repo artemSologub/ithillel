@@ -1,0 +1,26 @@
+{
+  "name": "ithillel",
+  "version": "0.1.0",
+  "description": "Test Learning Code",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./main.js",
+    "start:colors": "cross-env COLORS_ENABLED=1 node ./main.js",
+    "start:info": "cross-env LOG_LEVEL='info' node ./main.js",
+    "start:warn": "cross-env LOG_LEVEL='warn' node ./main.js",
+    "start:error": "cross-env LOG_LEVEL='error' node ./main.js",
+    "start:dev": "nodemon ./main.js"
+  },
+  "author": "Artem",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "config": "^3.3.11",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.0"
+  }
+}
