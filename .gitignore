@@ -129,6 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# ignore all in 'static' except .gitkeep file
-static/*
-!static/.gitkeep
+# ignore all in 'source', 'target' except .gitkeep file
+source/*
+!source/.gitkeep
+target/*
+!target/.gitkeep
