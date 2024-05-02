@@ -66,10 +66,18 @@ function copyFiles(files, source, target) {
   });
 }
 
-function fileSync() {
-  return {
-    start: () => start(),
-  };
-}
+// от жеж ці прибічники все ускладнювати :)
+// функція, яка повертає об'єкт в якому потрібний метод іще раз загорнутий в функцію, і це просто для
+// того щоб експортнути...
 
-module.exports = fileSync();
+// function fileSync() {
+//   return {
+//     start: () => start(),
+//   };
+// }
+// module.exports = fileSync();
+
+//! достатньо всього лише зробити отак:
+module.exports = {
+  start
+}
