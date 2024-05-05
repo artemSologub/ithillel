@@ -74,8 +74,8 @@ function initLogWriting(executor, content) {
 
 function writeInLog(executor, content) {
   const date = new Date().toISOString();
-
   const writeInfoStream = fs.createWriteStream(`./logs/${executor}.log`);
+
   writeInfoStream.write(`${date}: ${content}`);
   writeInfoStream.on('close', () => {
     writeInfoStream.close();
