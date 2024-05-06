@@ -37,6 +37,12 @@ const writeErrorStream = fs.createWriteStream(
 //! --------------- дороби отут будь ласка закриття стрімов по івенту beforeExit -----------------
 process.on('beforeExit', (code) => {
   console.log('Process beforeExit event with code: ', code);
+  writeInfoStream.end(() => {
+    console.log('Write info stream closed successfully.');
+  });
+  writeErrorStream.end(() => {
+    console.log('Write error stream closed successfully.');
+  });
 });
 
 function getLogger(moduleName) {
