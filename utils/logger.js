@@ -6,34 +6,59 @@ const { bgBlue, bgYellow, bgRed } = require('colors/safe');
 const colorsEnabled = config.colorsEnabled === '1';
 const logLevel = config.logLevel;
 
+// 1. тут ми один раз за виконання програми (при першій ініціалізації логгера)
+// перевіримо чи є папка logs і створимо якщо немає. Плюс, нам треба дочекатись поки цей процес закінчиться,
+// бо далі по коду нам потрібні ці файлстріми і папка з логами - тому варіант з колбеком не пройде, потрібен звичайний сінхронний флоу
+
+const logFolder = path.join('.', 'logs');
+
+try {
+  fs.accessSync(logFolder, fs.constants.F_OK);
+  // якщо помилки не було, значить папка log є, і доступна на запис
+} catch(err) {
+  // якщо ми тут, значить папки logs немає
+  fs.mkdirSync(logFolder, { recursive: true });
+  console.warn(`Folder [${logFolder}] created!`);
+}
+
+// 2. тут один раз ми відкриємо файл стріми для логів, і причепимось до івенту
+// beforeExit щоб закрити їх
+//? { flags: 'a' } потрібен щоб дописувати контент якщо файл вже існує і в ньому вже щось є. Без цього,
+// щоразу як ти запускаєш програму логи будуть перезатиратись. Це не зовсім коректна поведінка, нам потрібно зберігати історичні логи
+const writeInfoStream = fs.createWriteStream(path.join(logFolder, 'info.log'), { flags: 'a' });
+const writeErrorStream = fs.createWriteStream(path.join(logFolder, 'error.log'), { flags: 'a' });
+
+//! --------------- дороби отут будь ласка закриття стрімов по івенту beforeExit -----------------
+
+
 function getLogger(moduleName) {
   return {
     info: (...args) => {
-      checkLogFolder('info', ...args);
+      writeToFileLog(writeInfoStream, ...args);
 
       if (logLevel !== 'info') {
         return;
       }
 
-      return console.log(
+      console.log(
         colorsEnabled ? bgBlue(`${moduleName}:`) : `${moduleName}:`,
         ...args
       );
     },
     warn: (...args) => {
-      checkLogFolder('error', ...args);
+      writeToFileLog(writeErrorStream, ...args);
 
       if (logLevel === 'error') {
         return;
       }
 
-      return console.error(
+      console.error(
         colorsEnabled ? bgYellow(`${moduleName}:`) : `${moduleName}:`,
         ...args
       );
     },
     error: (...args) => {
-      checkLogFolder('error', ...args);
+      writeToFileLog(writeErrorStream, ...args);
 
       console.error(
         colorsEnabled ? bgRed(`${moduleName}:`) : `${moduleName}:`,
@@ -43,43 +68,10 @@ function getLogger(moduleName) {
   };
 }
 
-function checkLogFolder(executor, content) {
-  const logFolder = path.join('.', 'logs');
-
-  fs.access(logFolder, fs.constants.F_OK, (err) => {
-    if (err) {
-      fs.mkdir(logFolder, { recursive: true }, (err) => {
-        if (err) {
-          getLogger('logger').error('Error creating target folder:', err);
-          return;
-        } else {
-          getLogger('logger').warn(`Folder [${logFolder}] created!`);
-          initLogWriting(executor, content);
-        }
-      });
-    } else {
-      initLogWriting(executor, content);
-    }
-  });
-}
-
-function initLogWriting(executor, content) {
-  switch (executor) {
-    case 'info':
-      writeInLog('info', content);
-    case 'error':
-      writeInLog('error', content);
-  }
-}
-
-function writeInLog(executor, content) {
+function writeToFileLog(logStream, content) {
   const date = new Date().toISOString();
-  const writeInfoStream = fs.createWriteStream(`./logs/${executor}.log`);
 
-  writeInfoStream.write(`${date}: ${content}`);
-  writeInfoStream.on('close', () => {
-    writeInfoStream.close();
-  });
+  logStream.write(`${date}: ${content}\n`);
 }
 
 module.exports = getLogger;
