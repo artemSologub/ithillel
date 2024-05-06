@@ -1,4 +1,5 @@
 const config = require('config');
+const process = require('process');
 const fs = require('fs');
 const path = require('path');
 const { bgBlue, bgYellow, bgRed } = require('colors/safe');
@@ -15,7 +16,7 @@ const logFolder = path.join('.', 'logs');
 try {
   fs.accessSync(logFolder, fs.constants.F_OK);
   // якщо помилки не було, значить папка log є, і доступна на запис
-} catch(err) {
+} catch (err) {
   // якщо ми тут, значить папки logs немає
   fs.mkdirSync(logFolder, { recursive: true });
   console.warn(`Folder [${logFolder}] created!`);
@@ -25,11 +26,18 @@ try {
 // beforeExit щоб закрити їх
 //? { flags: 'a' } потрібен щоб дописувати контент якщо файл вже існує і в ньому вже щось є. Без цього,
 // щоразу як ти запускаєш програму логи будуть перезатиратись. Це не зовсім коректна поведінка, нам потрібно зберігати історичні логи
-const writeInfoStream = fs.createWriteStream(path.join(logFolder, 'info.log'), { flags: 'a' });
-const writeErrorStream = fs.createWriteStream(path.join(logFolder, 'error.log'), { flags: 'a' });
+const writeInfoStream = fs.createWriteStream(path.join(logFolder, 'info.log'), {
+  flags: 'a',
+});
+const writeErrorStream = fs.createWriteStream(
+  path.join(logFolder, 'error.log'),
+  { flags: 'a' }
+);
 
 //! --------------- дороби отут будь ласка закриття стрімов по івенту beforeExit -----------------
-
+process.on('beforeExit', (code) => {
+  console.log('Process beforeExit event with code: ', code);
+});
 
 function getLogger(moduleName) {
   return {
