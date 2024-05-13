@@ -1,6 +1,4 @@
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 
 const logger = require('./utils/logger')('server');
 
@@ -11,9 +9,7 @@ const srv = http.createServer();
 srv.listen(port);
 
 srv.on('request', (req, resp) => {
-  console.log('req.method', req.method);
   if (req.method !== 'GET' && req.url !== '/healthcheck') {
-    console.log('here');
     try {
       resp.statusCode = 404;
       logger.warn(`${req.method} ${req.url} ${resp.statusCode}`);
