@@ -60,6 +60,7 @@ function getLogger(moduleName) {
       );
     },
     warn: (...args) => {
+      console.log('warn log');
       writeToFileLog(writeErrorStream, ...args);
 
       if (logLevel === 'error') {

@@ -10,7 +10,9 @@
     "start:info": "cross-env LOG_LEVEL='info' node ./main.js",
     "start:warn": "cross-env LOG_LEVEL='warn' node ./main.js",
     "start:error": "cross-env LOG_LEVEL='error' node ./main.js",
-    "start:dev": "nodemon ./main.js"
+    "start:dev": "nodemon ./main.js",
+    "server:dev": "nodemon --inspect server.js",
+    "server": "node server.js"
   },
   "author": "Artem",
   "license": "MIT",
