@@ -3,3 +3,6 @@ COLORS_ENABLED=0
 
 # set logger methods availability. Possible values: info | warn | error
 LOG_LEVEL=warn
+
+# default port for server
+DEFAULT_PORT=3333
