@@ -1,39 +1,23 @@
 const http = require('http');
 
+const config = require('config');
 const logger = require('./utils/logger')('server');
 
-const port = 3333;
+const port = config.defaultPort;
 
 const srv = http.createServer();
 
-srv.listen(port);
+srv.listen(port, () => {
+  logger.info(`Server is listening on ${port} port`);
+});
 
 srv.on('request', (req, resp) => {
-  if (req.method !== 'GET' && req.url !== '/healthcheck') {
-    try {
-      resp.statusCode = 404;
-      logger.warn(`${req.method} ${req.url} ${resp.statusCode}`);
-      resp.end();
-      return;
-    } catch (err) {
-      resp.statusCode = 404;
-      logger.warn(`${req.method} ${req.url} ${resp.statusCode}`);
-      resp.end();
-    }
-  }
-
   if (req.method === 'GET' && req.url === '/healthcheck') {
-    try {
-      resp.setHeader('content-type', 'text');
-      resp.write('healthcheck passed');
-      logger.info(`${req.method} ${req.url} ${resp.statusCode}`);
-      resp.end();
-      return;
-    } catch (err) {
-      resp.statusCode = 404;
-      logger.warn(`${req.method} ${req.url} ${resp.statusCode}`);
-      resp.end();
-    }
+    resp.setHeader('content-type', 'text');
+    resp.write('healthcheck passed');
+    logger.info(`${req.method} ${req.url} ${resp.statusCode}`);
+    resp.end();
+    return;
   }
 
   resp.statusCode = 404;
