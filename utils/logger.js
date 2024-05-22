@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const { bgBlue, bgYellow, bgRed } = require('colors/safe');
 
-const colorsEnabled = config.colorsEnabled === '1';
-const logLevel = config.logLevel;
+const colorsEnabled = config.logger.colorsEnabled === '1';
+const logLevel = config.logger.logLevel;
 
 // 1. тут ми один раз за виконання програми (при першій ініціалізації логгера)
 // перевіримо чи є папка logs і створимо якщо немає. Плюс, нам треба дочекатись поки цей процес закінчиться,

@@ -12,14 +12,19 @@
     "start:error": "cross-env LOG_LEVEL='error' node ./main.js",
     "start:dev": "nodemon ./main.js",
     "server:dev": "nodemon --inspect server.js",
-    "server": "node server.js"
+    "server": "node server.js",
+    "server:express:dev": "nodemon --inspect server_express.js",
+    "server:express": "node server_express.js"
   },
   "author": "Artem",
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
     "config": "^3.3.11",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
