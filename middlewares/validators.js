@@ -12,6 +12,7 @@ const userIdSchema = yup.number({
 const userDataValidator = async (req, resp, next) => {
   try {
     await userDataSchema.validate(req.body);
+    next();
   } catch (err) {
     resp.status(400).send(`Not valid data! ${err}`);
   }
@@ -22,6 +23,7 @@ const userDataValidator = async (req, resp, next) => {
 const userIdValidator = async (req, resp, next) => {
   try {
     await userIdSchema.validate(Number(req.params.userId));
+    next();
   } catch (err) {
     resp.status(400).send(`Not valid userId! ${err}`);
   }
